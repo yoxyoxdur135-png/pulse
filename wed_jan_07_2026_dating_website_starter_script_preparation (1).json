@@ -1,4 +1,34 @@
-{
+{ # render.yaml
+services:
+  - type: web
+    name: loviora-backend
+    env: node
+    plan: starter
+    buildCommand: "cd backend && npm ci"
+    startCommand: "cd backend && npm run dev"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: loviora_db
+          property: connectionString
+      - key: JWT_SECRET
+        value: "change_me"
+
+  - type: web
+    name: loviora-frontend
+    env: node
+    plan: starter
+    buildCommand: "cd frontend && npm ci && npm run build"
+    startCommand: "cd frontend && npm run preview"
+    envVars:
+      - key: VITE_API_URL
+        value: "http://loviora-backend:4000/api"
+
+databases:
+  - name: loviora_db
+    engine: POSTGRES
+    version: "15"
+    plan: starter
   "currentUserLogin": "yoxyoxdur135-png",
   "threadUrl": "https://github.com/copilot/c/14377fe0-9f3b-461d-9b3e-496aaccf454c",
   "threadName": "Dating website starter script preparation",
